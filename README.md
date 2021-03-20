@@ -27,7 +27,7 @@ while running:
 		if event.type == pygame.QUIT:
 			running = false
 	
-	surface.fill(())
+	surface.fill((255, 255, 255))
 	
 	pygame.display.update()
 	clock.tick(fps)
@@ -38,4 +38,31 @@ Try running this code now! A black window should pop up that is the size we spec
 
 
 ## Step 2
-Now it's time to add the player! We're going to make a simple player class that has functions to render (display) it to the surface, update it's position, and check its state. But before we get into that let's quickly talk about rendering graphics. Unlike the convention you might learn in math class, the origin `(0, 0)` is in the _top_ left corner. Keep this in mind as we continue because the y axis will the reverse of what you are used to. Moving down the screen _increases_ the y coordinate.
+Now it's time to add the player! We're going to make a simple player class that has functions to render (display) it to the surface, update it's position, and check its state. But before we get into that let's quickly talk about rendering graphics. Unlike the convention you might learn in math class, the origin `(0, 0)` is in the _top_ left corner. Keep this in mind as we continue because the y axis will the reverse of what you are used to. Moving down the screen is the _positive_ y direction.
+
+Let's make the player class! We'll just start with the init function defining our variables. First we will define a rectangle from pygame, giving it x, y, width, and height parameters. We will also keep track of the y velocity so that the player can jump.
+```python
+class Player:
+	def __init__(self):
+		self.rect = pygame.Rect(0, 0, 60, 60)
+		self.vel_y = 0
+```
+Next let's add a draw function to render the player to the surface. We wil pass in the surface and run pygame's draw rectangle function. We pass in the surface, the color (like discussed in Step 1), and the rectangle.
+```python
+	def draw(self, surface):
+		 pygame.draw.rect(surface, (0, 0, 255), self.rect)
+```
+Let's make a player and try rendering it! Create an instance of the player class before our game loop.
+```python
+p = Player()
+```
+Now let's add the draw function into our game loop after the filling the surface, but before we update the display. Each render draws on top of the current screen, so the order in which you render different objects will determine how they overlap each other.
+```python
+	surface.fill((255, 255, 255))
+	
+	p.draw(surface)
+	
+	pygame.display.update()
+	clock.tick(fps)
+```
+After this step, try running the code again and you should see this screen:
