@@ -106,3 +106,30 @@ while running:
 	clock.tick(fps)
 ```
 Now when you run the game, the player should fall and land near the bottom of the screen like this:
+
+![step2-2.gif](https://raw.githubusercontent.com/lukvmil/pygame-tutorial/master/images/step2-2.gif)
+
+Now we just need to make the player jump when you press the space bar! The player should only be able to jump when they are on the ground, so let's add a function to the Player class that checks the y position against the ground level.
+
+```python
+def on_ground(self):
+	return self.rect.bottom == floor_level
+```
+Next let's add a variable for our jump "strength" before the game loop. This will give the player an upward velocity when the jump button is pressed.
+```python
+jump_strength = 30
+```
+Finally we are going to add the jump button to tie everything together. In our event loop we are going to check for the `pygame.KEYDOWN` event, and then check if the key was the space bar. Then we will add the jump velocity to the player if they are on the ground.
+```python
+if event.type == pygame.KEYDOWN:
+	if event.key == pygame.K_SPACE:
+		if p.on_ground():
+			p.vel_y = -jump_strength
+```
+We'll also quickly move the player a little to the right. We can do this by changing the center of the rectangle. In the Player `__init__()` function, add this line after we define `self.rect`.
+```python
+self.rect.center = 100, -20
+```
+At this point, we are now done with the Player class! You should now be able to jump by pressing the space bar:
+
+![step2-3.gif](https://raw.githubusercontent.com/lukvmil/pygame-tutorial/master/images/step2-3.gif)

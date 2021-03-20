@@ -10,13 +10,13 @@ screen_height = 400
 surface = pygame.display.set_mode((screen_width, screen_height))
 
 floor_level = 350
-jump_speed = 30
+jump_strength = 30
 gravity = 2
 
 
 class Player:
     def __init__(self):
-        self.rect = pygame.Rect(30, 30, 60, 60)
+        self.rect = pygame.Rect(0, 0, 60, 60)
         self.rect.center = 100, -20
 
         self.vel_y = 0
@@ -68,7 +68,7 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 if p1.on_ground():
-                    p1.vel_y = -jump_speed
+                    p1.vel_y = -jump_strength
 
     if (counter > wait_time):
         counter = 0
