@@ -66,3 +66,43 @@ Now let's add the draw function into our game loop after the filling the surface
 	clock.tick(fps)
 ```
 After this step, try running the code again and you should see this screen:
+
+![step2-1.png](https://raw.githubusercontent.com/lukvmil/pygame-tutorial/master/images/step2-1.png)
+
+Now let's try adding some physics to it! We want the player to be able to jump, so we need to add an update function that changes our y position and velocity without making the player fall off the screen.
+
+Let's start by defining the rate of gravity and the y position of the floor before the game loop. To make our floor 50 pixels from the bottom of the screen, we take the height of the screen (400) and subtract 50 to get 350. (Again this is because y = 0 is at the top.)
+
+```python
+gravity = 2
+floor_level = 350
+```
+Now let's add an update function to our player class. Every time the game loop runs, we want to update the velocity by adding the gravity to it, and the position by adding the velcoity to it. This is a simple physics model of acceleration to make a  realistic jump. 
+
+Finally we want to make sure that the plapyer doesn't pass through the floor. If the bottom of the rectangle is below the floor (greater y value), then we will set the bottom _equal to_ the floor, and set the velocity back to zero.
+```python
+def update(self):
+ self.vel_y += gravity
+ self.rect.y += self.vel_y
+
+ if self.rect.bottom > floor_level:
+	 self.rect.bottom = floor_level
+	 self.vel_y = 0
+```
+Now we just need to add this to our game loop. Place it right before the surface fill function so it updates the position of the player before the rendering starts. Your game loop should now look like this:
+```python
+while running:
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			running = False
+
+	p.update()
+
+	surface.fill((255, 255, 255))
+
+	p.draw(surface)
+
+	pygame.display.update()
+	clock.tick(fps)
+```
+Now when you run the game, the player should fall and land near the bottom of the screen like this:
