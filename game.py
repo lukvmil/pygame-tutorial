@@ -53,10 +53,9 @@ class Enemy:
 p1 = Player()
 enemies = []
 
-enemies.append(Enemy())
 counter = 0
 score = 0
-wait_time = random.randint(60, 120)
+wait_time = 0
 
 pressed = False
 running = True
