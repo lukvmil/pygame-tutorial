@@ -2,9 +2,10 @@
 
 ## Step 1: Setup
 
-To start, we will import the pygame library and initialize it. We will also set 3 constants: the width and height of the screen in pixels, and the framerate (number of times the screen updates in one second).
+To start, we will import the pygame library and initialize it, and import the random library.  We will also set 3 constants: the width and height of the screen in pixels, and the framerate (number of times the screen updates in one second).
 ```python
 import pygame
+import random
 
 pygame.init()
 
@@ -133,3 +134,65 @@ self.rect.center = 100, -20
 At this point, we are now done with the Player class! You should now be able to jump by pressing the space bar:
 
 ![step2-3.gif](https://raw.githubusercontent.com/lukvmil/pygame-tutorial/master/images/step2-3.gif)
+
+## Step 3
+We are now going to add the enemies, which the player will jump over. Here is what the Enemy class looks like:
+```python
+class Enemy:
+	def __init__(self):
+		self.rect = pygame.Rect(screen_width, floor_level - 50, 50, 50)
+		self.vel_x = -10
+
+	def draw(self, surface):
+		pygame.draw.rect(surface, (255, 0, 0), self.rect)
+
+	def update(self):
+		self.rect.x += self.vel_x
+
+		return self.rect.right < 0
+ ```
+ It is pretty similar to the Player class but I'll point out a few differences. We set the initial position to be just off of the screen in the x direction, and on the floor in the y direction. The x velcoity will be a constant -10, moving left towards the player. Because there is not acceleration, the update function is pretty simple. This time, the update function returns True or False. This will let us know when an enemy has gone of the left side of the screen and is safe to delete.
+ 
+ Because we are going to want multiple enemies, we are going to create a list to keep track of updating, rendering, and deleting them automatically. We also want to create a counter and wait time variable to know when to add new enemies, as well as variable to keep track of the player's score.
+ ```python
+ enemies = []
+ counter = 0
+ wait_time = 0
+ score = 0
+ ```
+ Next let's add all of the logic in the game loop. The wait time will be the number of frames until we create a new enemy. The counter will keep track of the frames that have passed. When the value of counter exceeds that of wait time, it is time to make a new enemy. We will reset the counter back to zero, and randomly pick a new wait time, 60 to 120 frames. At 30 frames per second, this is 2 to 4 seconds in between enemies. Then we'll add the new enemy to our list and increment the counter.
+ ```python
+ if (counter > wait_time):
+	 counter = 0
+	 wait_time = random.randint(60, 120)
+	 enemies.append(Enemy())
+ 
+ counter += 1
+ ```
+ After this we want to update all of the enemies. This function is a little bit more complicated. Every time we run the loop, we will run this code for every enemy. If we update an enemy and get back a True value, we know it has left the screen. If this happens, we remove the enemy from the list, and increase the players score. 
+ 
+ Then we want to check if the player has hit any of the enemies. We are checking if the player's rectangle intersects with an enemy rectangle using the `colliderect()` function.  If this happens we want to restart the game. We reset the player's position, clear the enemies, set the score back to zero, and send a message. Add this code after we update the player.
+ ```python
+for enemy in enemies:
+	if enemy.update() == True:
+		enemies.remove(enemy)
+		score += 1
+		print(score)
+
+	if p1.rect.colliderect(enemy.rect):
+		p1.rect.center = 100, -20
+		enemies = []
+		score = 0
+		print("You died! Restarting...")
+ ```
+ Now we just need to draw the floor and the enemies in. We will use a simple green rectangle with the proper dimensions for the floor.
+ ```python
+ pygame.draw.rect(surface, (0, 153, 0), pygame.Rect(0, floor_level, screen_width, screen_height - floor_level))
+ ```
+ To draw the enemies we will simply iterate through each of them and call their draw function:
+ ```python
+for enemy in enemies:
+	enemy.draw(surface)
+ ```
+ We are done now! Your game should look like this:
+ ![step3.gif](https://raw.githubusercontent.com/lukvmil/pygame-tutorial/master/images/step3.gif)
