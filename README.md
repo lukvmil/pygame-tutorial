@@ -140,7 +140,7 @@ We are now going to add the enemies, which the player will jump over. Here is wh
 ```python
 class Enemy:
 	def __init__(self):
-		self.rect = pygame.Rect(screen_width, floor_level - 50, 50, 50)
+		self.rect = pygame.Rect(width, floor_level - 50, 50, 50)
 		self.vel_x = -10
 
 	def draw(self, surface):
@@ -179,15 +179,15 @@ for enemy in enemies:
 		score += 1
 		print(score)
 
-	if p1.rect.colliderect(enemy.rect):
-		p1.rect.center = 100, -20
+	if p.rect.colliderect(enemy.rect):
+		p.rect.center = 100, -20
 		enemies = []
 		score = 0
 		print("You died! Restarting...")
  ```
  Now we just need to draw the floor and the enemies in. We will use a simple green rectangle with the proper dimensions for the floor.
  ```python
- pygame.draw.rect(surface, (0, 153, 0), pygame.Rect(0, floor_level, screen_width, screen_height - floor_level))
+ pygame.draw.rect(surface, (0, 153, 0), pygame.Rect(0, floor_level, width, height - floor_level))
  ```
  To draw the enemies we will simply iterate through each of them and call their draw function:
  ```python
