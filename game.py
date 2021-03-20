@@ -14,9 +14,8 @@ jump_speed = 30
 gravity = 2
 
 
-class Player(pygame.sprite.Sprite):
+class Player:
     def __init__(self):
-        super().__init__()
         self.rect = pygame.Rect(30, 30, 60, 60)
         self.rect.center = 100, -20
 
@@ -37,9 +36,8 @@ class Player(pygame.sprite.Sprite):
         return self.rect.bottom == floor_level
 
 
-class Enemy(pygame.sprite.Sprite):
+class Enemy:
     def __init__(self):
-        super().__init__()
         self.rect = pygame.Rect(screen_width, 300, 50, 50)
         self.vel_x = -10
 
