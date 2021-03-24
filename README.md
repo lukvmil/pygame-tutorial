@@ -50,8 +50,8 @@ class Player:
 ```
 Next let's add a draw function to render the player to the surface. We wil pass in the surface and run pygame's draw rectangle function. We pass in the surface, the color (like discussed in Step 1), and the rectangle.
 ```python
-	def draw(self, surface):
-		 pygame.draw.rect(surface, (0, 0, 255), self.rect)
+    def draw(self, surface):
+        pygame.draw.rect(surface, (0, 0, 255), self.rect)
 ```
 Let's make a player and try rendering it! Create an instance of the player class before our game loop.
 ```python
@@ -59,12 +59,12 @@ p = Player()
 ```
 Now let's add the draw function into our game loop after the filling the surface, but before we update the display. Each render draws on top of the current screen, so the order in which you render different objects will determine how they overlap each other.
 ```python
-	surface.fill((255, 255, 255))
+    surface.fill((255, 255, 255))
 	
-	p.draw(surface)
+    p.draw(surface)
 	
-	pygame.display.update()
-	clock.tick(fps)
+    pygame.display.update()
+    clock.tick(fps)
 ```
 After this step, try running the code again and you should see this screen:
 
@@ -83,28 +83,28 @@ Now let's add an update function to our player class. Every time the game loop r
 Finally we want to make sure that the plapyer doesn't pass through the floor. If the bottom of the rectangle is below the floor (greater y value), then we will set the bottom _equal to_ the floor, and set the velocity back to zero.
 ```python
 def update(self):
- self.vel_y += gravity
- self.rect.y += self.vel_y
+    self.vel_y += gravity
+    self.rect.y += self.vel_y
 
- if self.rect.bottom > floor_level:
-	 self.rect.bottom = floor_level
-	 self.vel_y = 0
+    if self.rect.bottom > floor_level:
+        self.rect.bottom = floor_level
+        self.vel_y = 0
 ```
 Now we just need to add this to our game loop. Place it right before the surface fill function so it updates the position of the player before the rendering starts. Your game loop should now look like this:
 ```python
 while running:
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			running = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-	p.update()
+    p.update()
 
-	surface.fill((255, 255, 255))
+    surface.fill((255, 255, 255))
 
-	p.draw(surface)
+    p.draw(surface)
 
-	pygame.display.update()
-	clock.tick(fps)
+    pygame.display.update()
+    clock.tick(fps)
 ```
 Now when you run the game, the player should fall and land near the bottom of the screen like this:
 
