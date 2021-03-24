@@ -24,14 +24,14 @@ After checking for events, we will fill the surface with the color white. The `s
 ```python
 running = True
 while running:
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-		running = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+        running = False
+        
+    surface.fill((255, 255, 255))
 	
-	surface.fill((255, 255, 255))
-	
-	pygame.display.update()
-	clock.tick(fps)
+    pygame.display.update()
+    clock.tick(fps)
 ```
 Try running this code now! A black window should pop up that is the size we specified, and if you click the "X", it should close. On Windows, it will look like this:
 
