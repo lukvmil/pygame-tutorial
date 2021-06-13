@@ -26,7 +26,7 @@ running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-        running = False
+        	running = False
         
     surface.fill((255, 255, 255))
 	
