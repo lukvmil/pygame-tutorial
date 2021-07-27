@@ -44,9 +44,9 @@ Now it's time to add the player! We're going to make a simple player class that 
 Let's make the player class! We'll just start with the init function defining our variables. First we will define a rectangle from pygame, giving it x, y, width, and height parameters. We will also keep track of the y velocity so that the player can jump.
 ```python
 class Player:
-	def __init__(self):
-		self.rect = pygame.Rect(0, 0, 60, 60)
-		self.vel_y = 0
+    def __init__(self):
+        self.rect = pygame.Rect(0, 0, 60, 60)
+        self.vel_y = 0
 ```
 Next let's add a draw function to render the player to the surface. We wil pass in the surface and run pygame's draw rectangle function. We pass in the surface, the color (like discussed in Step 1), and the rectangle.
 ```python
@@ -123,9 +123,9 @@ jump_strength = 30
 Finally we are going to add the jump button to tie everything together. In our event loop we are going to check for the `pygame.KEYDOWN` event, and then check if the key was the space bar. Then we will add the jump velocity to the player if they are on the ground.
 ```python
 if event.type == pygame.KEYDOWN:
-	if event.key == pygame.K_SPACE:
-		if p.on_ground():
-			p.vel_y = -jump_strength
+    if event.key == pygame.K_SPACE:
+        if p.on_ground():
+            p.vel_y = -jump_strength
 ```
 We'll also quickly move the player a little to the right. We can do this by changing the center of the rectangle. In the Player `__init__()` function, add this line after we define `self.rect`.
 ```python
@@ -139,17 +139,17 @@ At this point, we are now done with the Player class! You should now be able to 
 We are now going to add the enemies, which the player will jump over. Here is what the Enemy class looks like:
 ```python
 class Enemy:
-	def __init__(self):
-		self.rect = pygame.Rect(width, floor_level - 50, 50, 50)
-		self.vel_x = -10
+    def __init__(self):
+        self.rect = pygame.Rect(width, floor_level - 50, 50, 50)
+        self.vel_x = -10
 
-	def draw(self, surface):
-		pygame.draw.rect(surface, (255, 0, 0), self.rect)
+    def draw(self, surface):
+        pygame.draw.rect(surface, (255, 0, 0), self.rect)
 
-	def update(self):
-		self.rect.x += self.vel_x
+    def update(self):
+        self.rect.x += self.vel_x
 
-		return self.rect.right < 0
+        return self.rect.right < 0
  ```
  It is pretty similar to the Player class but I'll point out a few differences. We set the initial position to be just off of the screen in the x direction, and on the floor in the y direction. The x velcoity will be a constant -10, moving left towards the player. Because there is not acceleration, the update function is pretty simple. This time, the update function returns True or False. This will let us know when an enemy has gone of the left side of the screen and is safe to delete.
  
@@ -163,9 +163,9 @@ class Enemy:
  Next let's add all of the logic in the game loop. The wait time will be the number of frames until we create a new enemy. The counter will keep track of the frames that have passed. When the value of counter exceeds that of wait time, it is time to make a new enemy. We will reset the counter back to zero, and randomly pick a new wait time, 60 to 120 frames. At 30 frames per second, this is 2 to 4 seconds in between enemies. Then we'll add the new enemy to our list and increment the counter.
  ```python
  if (counter > wait_time):
-	 counter = 0
-	 wait_time = random.randint(60, 120)
-	 enemies.append(Enemy())
+     counter = 0
+     wait_time = random.randint(60, 120)
+     enemies.append(Enemy())
  
  counter += 1
  ```
@@ -174,16 +174,16 @@ class Enemy:
  Then we want to check if the player has hit any of the enemies. We are checking if the player's rectangle intersects with an enemy rectangle using the `colliderect()` function.  If this happens we want to restart the game. We reset the player's position, clear the enemies, set the score back to zero, and send a message. Add this code after we update the player.
  ```python
 for enemy in enemies:
-	if enemy.update() == True:
-		enemies.remove(enemy)
-		score += 1
-		print(score)
+    if enemy.update() == True:
+        enemies.remove(enemy)
+        score += 1
+        print(score)
 
-	if p.rect.colliderect(enemy.rect):
-		p.rect.center = 100, -20
-		enemies = []
-		score = 0
-		print("You died! Restarting...")
+    if p.rect.colliderect(enemy.rect):
+        p.rect.center = 100, -20
+        enemies = []
+        score = 0
+        print("You died! Restarting...")
  ```
  Now we just need to draw the floor and the enemies in. We will use a simple green rectangle with the proper dimensions for the floor.
  ```python
