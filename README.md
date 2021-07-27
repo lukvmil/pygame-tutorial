@@ -114,7 +114,7 @@ Now we just need to make the player jump when you press the space bar! The playe
 
 ```python
 def on_ground(self):
-	return self.rect.bottom == floor_level
+    return self.rect.bottom == floor_level
 ```
 Next let's add a variable for our jump "strength" before the game loop. This will give the player an upward velocity when the jump button is pressed.
 ```python
